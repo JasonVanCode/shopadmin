@@ -16,7 +16,7 @@
 
 
 
-本项目需要配合微信小程序端使用，GitHub: [https://github.com/tumobi/nideshop-mini-program](https://github.com/tumobi/nideshop-mini-program)
+本项目需要配合微信小程序端使用，GitHub: [https://github.com/JasonVanCode/wechatshop](https://github.com/tumobi/nideshop-mini-program)
 
 ## 测试环境搭建
 
