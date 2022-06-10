@@ -43,9 +43,11 @@ func (g *GoodsController) GetCategory() {
 func (g *GoodsController) GetGoodsList() {
 	page, size := g.pageData["page"], g.pageData["size"]
 	var goodsService services.GoodsService
-	goods := goodsService.GetGoodsLists(page, size, g.getData)
+	goods, filterCategories := goodsService.GetGoodsLists(page, size, g.getData)
 	resultData := services.GoodsListRtnJson{
+		goods.Data.([]*models.NideshopGoods),
 		goods,
+		filterCategories,
 	}
 	utils.HttpSuccess(resultData, g.Ctx)
 }
@@ -117,9 +119,6 @@ func (g *GoodsController) GetGoodsDetail() {
 		comment,
 		goodBrand,
 	}, g.Ctx)
-
-	g.Ctx.WriteString("hahahahah")
-
 }
 
 //获取相关商品

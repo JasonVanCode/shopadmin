@@ -16,6 +16,8 @@ import (
 func init() {
 	//登录的验证
 	middleware.Auth()
+	middleware.AdminAuth()
+	//小程序接口管理
 	ns := beego.NewNamespace("/api",
 		beego.NSNamespace("/object",
 			beego.NSInclude(
@@ -103,6 +105,92 @@ func init() {
 		beego.NSNamespace("/pay",
 			beego.NSRouter("/prepay", &controllers.PayController{}, "get:PrePay"),
 		),
+
+		//搜索
+		beego.NSNamespace("/search",
+			beego.NSRouter("/index", &controllers.SearchController{}, "get:GetIndex"),
+			beego.NSRouter("/helper", &controllers.SearchController{}, "get:SearchHelper"),
+		),
 	)
-	beego.AddNamespace(ns)
+
+	//商城后台管理系统接口
+
+	ns2 := beego.NewNamespace("/admin",
+		//登录验证
+		beego.NSNamespace("/auth",
+			beego.NSRouter("/login", &controllers.AdminAuthController{}, "post:Login"),
+		),
+		//首页数据
+		beego.NSNamespace("/index",
+			beego.NSRouter("/index", &controllers.AdminIndexController{}, "get:GetIndex"),
+		),
+		//用户列表
+		beego.NSNamespace("/user",
+			beego.NSRouter("/index", &controllers.AdminUserController{}, "get:GetIndex"),
+			beego.NSRouter("/del", &controllers.AdminUserController{}, "post:DelUser"),
+			beego.NSRouter("/createOrUpdate", &controllers.AdminUserController{}, "post:CreateOrUpdate"),
+			beego.NSRouter("/changeStatus", &controllers.AdminUserController{}, "post:ChangeStatus"),
+			beego.NSRouter("/changeRole", &controllers.AdminUserController{}, "post:ChangeRole"),
+		),
+		//角色列表
+		beego.NSNamespace("/role",
+			beego.NSRouter("/index", &controllers.AdminRoleController{}, "get:GetIndex"),
+			beego.NSRouter("/listIdName", &controllers.AdminRoleController{}, "get:GetRoleListIdName"),
+			beego.NSRouter("/createOrUpdate", &controllers.AdminRoleController{}, "post:CreateOrUpdate"),
+			beego.NSRouter("/changeStatus", &controllers.AdminRoleController{}, "post:ChangeStatus"),
+			beego.NSRouter("/del", &controllers.AdminRoleController{}, "post:DelRole"),
+			beego.NSRouter("/getRole", &controllers.AdminRoleController{}, "get:GetRoleInfo"),
+			//角色菜单分配
+			beego.NSRouter("/allocMenus", &controllers.AdminRoleController{}, "post:AllocMenus"),
+		),
+		//菜单列表
+		beego.NSNamespace("/menu",
+			beego.NSRouter("/index", &controllers.AdminMenuController{}, "get:GetIndex"),
+			beego.NSRouter("/listIdName", &controllers.AdminMenuController{}, "get:GetMenuListIdName"),
+			beego.NSRouter("/createOrUpdate", &controllers.AdminMenuController{}, "post:CreateOrUpdate"),
+			//beego.NSRouter("/changeStatus", &controllers.AdminMenuController{}, "post:ChangeStatus"),
+			beego.NSRouter("/del", &controllers.AdminMenuController{}, "post:DelMenu"),
+			beego.NSRouter("/getAllocMenuLists", &controllers.AdminMenuController{}, "get:GetAllocMenuLists"),
+		),
+		//商品模块
+		beego.NSNamespace("/goods",
+			beego.NSRouter("/index", &controllers.AdminGoodsController{}, "get:GetIndex"),
+			//修改商品状态
+			beego.NSRouter("/changeStatus", &controllers.AdminGoodsController{}, "post:ChangeGoodsStatus"),
+
+			beego.NSNamespace("/brand",
+				//商品品牌
+				beego.NSRouter("/index", &controllers.AdminBrandController{}, "get:GetIndex"),
+				//添加品牌
+				beego.NSRouter("/createOrUpdate", &controllers.AdminBrandController{}, "post:CreateOrUpdate"),
+				beego.NSRouter("/getBrand", &controllers.AdminBrandController{}, "get:GetEdit"),
+				beego.NSRouter("/listIdName", &controllers.AdminBrandController{}, "get:GetBrandIdNames"),
+			),
+			beego.NSNamespace("/category",
+				beego.NSRouter("/index", &controllers.AdminCategoryController{}, "get:GetIndex"),
+				//分类属性
+				beego.NSRouter("/attribute", &controllers.AdminCategoryController{}, "get:GetCategoryAttributeLists"),
+				//获取顶级分类
+				beego.NSRouter("/listIdName", &controllers.AdminCategoryController{}, "get:GetCategoryIdName"),
+				beego.NSRouter("/createOrUpdate", &controllers.AdminCategoryController{}, "post:CreateOrUpdate"),
+				beego.NSRouter("/getCategory", &controllers.AdminCategoryController{}, "get:GetEdit"),
+				//删除分类
+				beego.NSRouter("/del", &controllers.AdminCategoryController{}, "post:DelCategory"),
+				//获取分类以及子类的数据
+				beego.NSRouter("/withChildren", &controllers.AdminCategoryController{}, "get:GetCategoryWithChildren"),
+			),
+			//属性
+			beego.NSNamespace("/attribute",
+				//添加品牌
+				beego.NSRouter("/createOrUpdate", &controllers.AdminCategoryController{}, "post:AttributeCreateOrUpdate"),
+				//删除
+				beego.NSRouter("/del", &controllers.AdminCategoryController{}, "post:DelAttribute"),
+			),
+		),
+		//文件上传处理
+		beego.NSNamespace("/upload",
+			beego.NSRouter("/uploadSinglePic", &controllers.UploadController{}, "post:UploadSinglePic"),
+		),
+	)
+	beego.AddNamespace(ns, ns2)
 }

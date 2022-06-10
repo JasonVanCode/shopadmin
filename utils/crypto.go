@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 )
 
 //加密过程：
@@ -73,4 +74,17 @@ func AesCBCDecrypt(data, key, iv []byte) ([]byte, error) {
 	decryptData = PKCS7UnPadding(decryptData)
 	//解密之后的串
 	return decryptData, nil
+}
+
+//bcrypt 加密密码
+func PasswordHash(password string) ([]byte, error) {
+	pByte, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return pByte, err
+}
+
+//bcrypt 密码比对
+func PasswordVerify(hashPass, password []byte) bool {
+	err := bcrypt.CompareHashAndPassword(hashPass, password)
+	fmt.Println(err)
+	return err == nil
 }

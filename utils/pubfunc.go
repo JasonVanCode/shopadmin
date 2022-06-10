@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"crypto/md5"
+	"crypto/sha1"
 	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	uuid "github.com/satori/go.uuid"
@@ -34,10 +36,33 @@ func GetNowTime() string {
 	return t.Format("2006-01-02 15:04:05")
 }
 
+//获取当前时间不包括时间
+func GetNowDate() string {
+	t := time.Now()
+	return t.Format("2006-01-02")
+}
+
+//获取当前时间戳
+func GetNowTimestamp() int64 {
+	return time.Now().Unix()
+}
+
 //uuid生成唯一的串
 func GenarateUUid() string {
 	return uuid.NewV4().String()
 }
+
+//获取md5加密
+func GetMd5String(data string) string {
+	return fmt.Sprintf("%x", md5.Sum([]byte(data)))
+}
+
+//获取sha1加密
+func GetSha1String(data string) string {
+	return fmt.Sprintf("%x", sha1.Sum([]byte(data)))
+}
+
+//获取sha1加密
 
 //将[]orm.Parms 转 []int
 func TransMapValueToSliceInt(data []orm.Params) []int {

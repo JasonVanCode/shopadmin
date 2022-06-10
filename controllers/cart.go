@@ -102,25 +102,24 @@ func (c *CartController) AddCart() {
 			specificationData := specificationService.GetGoodsSpecification(body.GoodsId, goodsspecificationids)
 			//获取产品规格拼接的数据
 			values = specificationService.HandleSpecificationValues(specificationData)
-
-			var cartData = models.NideshopCart{
-				UserId:                    userId,
-				SessionId:                 "1",
-				GoodsId:                   goods.Id,
-				GoodsSn:                   product.GoodsSn,
-				ProductId:                 product.Id,
-				GoodsName:                 goods.Name,
-				RetailPrice:               product.RetailPrice,
-				MarketPrice:               product.RetailPrice,
-				Number:                    body.Number,
-				GoodsSpecifitionIds:       product.GoodsSpecificationIds,
-				GoodsSpecifitionNameValue: values,
-				Checked:                   1,
-				ListPicUrl:                goods.ListPicUrl,
-			}
-			if err := cartService.AddCart(&cartData); err != nil {
-				utils.HttpFail(400, "添加购物车失败", c.Ctx)
-			}
+		}
+		var cartData = models.NideshopCart{
+			UserId:                    userId,
+			SessionId:                 "1",
+			GoodsId:                   goods.Id,
+			GoodsSn:                   product.GoodsSn,
+			ProductId:                 product.Id,
+			GoodsName:                 goods.Name,
+			RetailPrice:               product.RetailPrice,
+			MarketPrice:               product.RetailPrice,
+			Number:                    body.Number,
+			GoodsSpecifitionIds:       product.GoodsSpecificationIds,
+			GoodsSpecifitionNameValue: values,
+			Checked:                   1,
+			ListPicUrl:                goods.ListPicUrl,
+		}
+		if err := cartService.AddCart(&cartData); err != nil {
+			utils.HttpFail(400, "添加购物车失败", c.Ctx)
 		}
 
 	} else {
