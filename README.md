@@ -1,4 +1,4 @@
-# moshopserver小程序商城后台系统
+# 微信小程序商城后台接口以及后台商城管理系统接口
 
 [![Build Status][1]][2] [![Go Report Card][3]][4] [![MIT licensed][5]][6]
 
@@ -16,7 +16,9 @@
 
 
 
-本项目需要配合微信小程序端使用，GitHub: [https://github.com/JasonVanCode/wechatshop](https://github.com/tumobi/nideshop-mini-program)
+本项目需要配合微信小程序端使用，GitHub: [https://github.com/JasonVanCode/wechatshop](https://github.com/JasonVanCode/wechatshop)
+
+本项目需要配合商城管理端，GitHub: [https://github.com/JasonVanCode/shop_vue](https://github.com/JasonVanCode/shop_vue)
 
 ## 测试环境搭建
 
@@ -30,7 +32,7 @@
 
 - 创建数据库nideshop并导入项目根目录下的nideshop.sql
 
-        CREATE SCHEMA `nideshop_new` DEFAULT CHARACTER SET utf8mb4 ;
+        CREATE DATABASE `nideshop_new` DEFAULT CHARACTER SET utf8mb4 ;
 
 - 配置好小程序相关字段
 
@@ -39,24 +41,39 @@
         appid=""
         #小程序密钥
         secret="" 
-             
+  
+- 配置好数据库相关字段
+  
+      [mysql]
+      host = ""
+      name = ""
+      password = ""
+      port = 3306
+      database = ""
+      charset = ""
 
--  运行以下命令（默认为开启8080端口）
+
+
+- 配置好相关的图片服务器
+
+       [attachment]
+       #最大文件
+       validate_size = 52428800
+       validate_ext = "bmp,ico,psd,jpg,jpeg,png,gif,doc,docx,xls,xlsx,pdf,zip,rar,7z,tz,mp3,mp4,mov,swf,flv,avi,mpg,ogg,wav,flac,ape"
+       #下面地址随便自定义，图片上传到自定义nginx 虚拟主机当中
+       real_temp_path = ""
+       real_save_path = ""
+
+       #图片服务器实际存放的目录
+       save_path = ""
+       #图片服务器临时存放目录
+       temp_path = ""
+       #图片服务器地址 nginx配置的
+       file_host = ""
+
+- 运行以下命令（默认为开启8080端口）
 
         go run main.go
-
-
-
-## 功能列表
-+ 首页
-+ 分类首页、分类商品、新品首发、人气推荐商品页面
-+ 商品详情页面，包含加入购物车、收藏商品、商品评论功能
-+ 搜索功能
-+ 专题功能
-+ 品牌功能
-+ 完整的购物流程，商品的加入、编辑、删除、批量选择，收货地址的选择，下单支付
-+ 会员中心（订单、收藏、足迹、收货地址、意见反馈）
-  ....
 
 
 
